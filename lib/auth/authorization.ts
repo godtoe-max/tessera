@@ -41,3 +41,15 @@ export function requireRead(viewer:Viewer, resource:ResourceScope){
 export function requireWrite(viewer:Viewer, resource:ResourceScope){
   if(!canWrite(viewer,resource)) throw new NotFoundOrForbiddenError();
 }
+
+export function canInvite(viewer:Viewer,request:{organizationId:string;projectId?:string;role:TesseraRole}){
+  if(!viewer.active) return false;
+  if(viewer.memberships.some(m=>m.role==="administrator"||m.role==="operations_manager")) return true;
+  return viewer.memberships.some(m=>{
+    if(m.organizationId!==request.organizationId) return false;
+    if(m.projectId&&m.projectId!==request.projectId) return false;
+    if(m.role==="engagement_lead") return ["customer_user","customer_manager","consultant"].includes(request.role);
+    if(m.role==="customer_manager") return request.role==="customer_user";
+    return false;
+  });
+}

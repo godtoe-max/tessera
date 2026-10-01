@@ -25,6 +25,8 @@ Every read or mutation must derive the user from a verified Netlify Identity ses
 5. Re-check mutation-specific permission before writing.
 6. Record the operation in `tessera_events` where applicable.
 
+Invitations use the same scope model. Administrators and operations managers may invite across clients; engagement leads may invite customer and consultant accounts only inside managed engagements; customer managers may invite customer users only inside their own organization. Invitations expire and are auditable.
+
 Customer queries must always include an authorized `organization_id`; project-restricted customers must also match an authorized `project_id`. Internal messages are filtered at the database query layer, not hidden after they reach the browser.
 
 ## Security invariants
@@ -32,6 +34,7 @@ Customer queries must always include an authorized `organization_id`; project-re
 - A customer cannot enumerate or retrieve records from another organization.
 - A customer never receives internal messages, consultant workload, Marks, assignment data or private events.
 - Attachment keys include the organization and Tessera identifiers and are served only after authorization.
+- Attachments are limited to approved document/image types and 20 MB; downloads repeat the parent Tessera authorization check.
 - Role changes, membership changes and exports are audited.
 - Account registration is invite-only.
 - Consultant and administrator accounts require MFA before production use.
@@ -39,4 +42,4 @@ Customer queries must always include an authorized `organization_id`; project-re
 
 ## Test matrix
 
-Automated integration tests will cover same-organization access, cross-organization denial, project-restricted denial, customer/internal message separation, consultant project scope, manager elevation, disabled accounts, forged identifiers and attachment access.
+Automated tests cover same-organization access, cross-organization denial, project-restricted denial, customer/internal message separation, consultant project scope, manager elevation, disabled accounts, forged identifiers, invitation boundaries, input validation and attachment access.

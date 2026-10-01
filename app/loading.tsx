@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="state-page"><div className="state-brand"><b>T</b>Tessera</div><section><span className="state-spinner"/><h1>Loading your workspace</h1><p>Preparing Tesserae and client access.</p></section></main>}

@@ -15,6 +15,8 @@ The first working surface includes separate consultant and customer experiences:
 - a customer portal restricted to that customer's Tesserae
 - consultant-only assignment controls and internal notes
 - a role preview switch while authentication is still being connected
+- consultant overview, client/project, account management, and settings workspaces
+- queue filtering, sorting, pagination states, and mobile ticket details
 
 Records currently live in in-memory sample data and reset when the page reloads.
 
@@ -55,4 +57,4 @@ Do not commit a database URL, token, or Identity secret. Netlify-provided runtim
 
 ## Status
 
-The interface, PostgreSQL schema, repository contract, role authorization rules, security tests, and Netlify project configuration are present. Database persistence, live authentication, attachments, email ingestion, and deployment are intentionally deferred until the Netlify project is connected.
+The interface, PostgreSQL schema, invitation records, repository and identity-provider contracts, role authorization rules, attachment safeguards, automated tests, and Netlify project configuration are present. Live database persistence, Netlify Identity calls, Blob uploads, email ingestion, and deployment require the Netlify project connection.

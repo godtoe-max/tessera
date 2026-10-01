@@ -13,6 +13,6 @@ export function toCustomerTessera(record:StoredTessera){
     title:record.title,
     description:record.description,
     status:record.status,
-    messages:record.messages.filter(message=>message.visibility==="customer").map(({visibility:_,...message})=>message),
+    messages:record.messages.filter(message=>message.visibility==="customer").map(message=>({id:message.id,authorName:message.authorName,body:message.body,createdAt:message.createdAt})),
   };
 }
