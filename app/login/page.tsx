@@ -1,0 +1,13 @@
+"use client";
+
+import { FormEvent, useEffect, useState } from "react";
+import { handleAuthCallback, login } from "@netlify/identity";
+import { ArrowRight, KeyRound, ShieldCheck } from "lucide-react";
+
+export default function LoginPage(){
+  const [email,setEmail]=useState(""),[password,setPassword]=useState(""),[busy,setBusy]=useState(false),[error,setError]=useState("");
+  useEffect(()=>{void handleAuthCallback().then(result=>{if(result) window.location.assign("/");}).catch(()=>setError("That sign-in link is no longer valid."));},[]);
+  async function submit(event:FormEvent){event.preventDefault();setBusy(true);setError("");try{await login(email,password);window.location.assign("/");}catch{setError("We couldn’t sign you in. Check your email and password, then try again.");setBusy(false);}}
+  return <main className="login-shell"><section className="login-story"><div className="login-brand"><b>T</b><span>Tessera</span></div><div><small>THE TOKEN OF SHARED PURPOSE</small><h1>One place for every request, commitment, and conversation.</h1><p>Tessera keeps consulting teams and their clients aligned from the first question through resolution.</p></div><footer><ShieldCheck/><span>Access is isolated by client, project, and role.</span></footer></section><section className="login-panel"><form onSubmit={submit}><span className="login-icon"><KeyRound/></span><small>WELCOME BACK</small><h2>Sign in to Tessera</h2><p>Use the account from your Tessera invitation.</p><label>Email address<input type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} required placeholder="you@company.com"/></label><label>Password<input type="password" autoComplete="current-password" value={password} onChange={e=>setPassword(e.target.value)} required placeholder="Your password"/></label>{error&&<div className="login-error" role="alert">{error}</div>}<button className="primary login-submit" disabled={busy}>{busy?"Signing in…":<>Sign in <ArrowRight/></>}</button><small className="login-help">Need access? Ask your Tessera administrator for an invitation.</small></form></section></main>;
+}
+
