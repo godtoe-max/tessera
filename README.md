@@ -4,7 +4,7 @@ Tessera is a client- and project-aware service desk for consulting teams. A sing
 
 ## Current interface
 
-The first working surface focuses on day-to-day consultant work:
+The first working surface includes separate consultant and customer experiences:
 
 - personal, unassigned, due-today, and all-Tesserae queues
 - search across requests, clients, and projects
@@ -12,6 +12,9 @@ The first working surface focuses on day-to-day consultant work:
 - client, project, assignee, due-date, status, and Mark context
 - a responsive mobile layout
 - an accessible flow for opening a new Tessera
+- a customer portal restricted to that customer's Tesserae
+- consultant-only assignment controls and internal notes
+- a role preview switch while authentication is still being connected
 
 Records currently live in in-memory sample data and reset when the page reloads.
 
@@ -24,7 +27,7 @@ Records currently live in in-memory sample data and reset when the page reloads.
 - **Server operations:** Netlify Functions
 - **Authentication:** Netlify Identity or Microsoft Entra ID
 
-The database layer will model clients, projects, users, Tesserae, comments, attachments, event history, assignments, SLA clocks, and time entries.
+The database schema already models organizations, projects, users, memberships, Tesserae, messages, attachments, and event history. SLA clocks and time entries are later-phase additions.
 
 ## Development
 
@@ -33,6 +36,7 @@ Requires Node.js 22.13 or newer.
 ```sh
 npm ci
 npm run dev
+npm test
 ```
 
 The main interface is implemented in `app/page.tsx`; shared styling is in `app/globals.css`.
@@ -51,4 +55,4 @@ Do not commit a database URL, token, or Identity secret. Netlify-provided runtim
 
 ## Status
 
-This repository contains the interface prototype. Database persistence, authentication, attachments, email ingestion, and Netlify deployment are intentionally deferred to the next phase.
+The interface, PostgreSQL schema, repository contract, role authorization rules, security tests, and Netlify project configuration are present. Database persistence, live authentication, attachments, email ingestion, and deployment are intentionally deferred until the Netlify project is connected.
