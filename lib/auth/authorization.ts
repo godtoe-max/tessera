@@ -28,3 +28,16 @@ export function authorizedOrganizationIds(viewer:Viewer){
   if(viewer.memberships.some(m=>crossClientRoles.has(m.role))) return "all" as const;
   return [...new Set(viewer.memberships.map(m=>m.organizationId))];
 }
+
+export class NotFoundOrForbiddenError extends Error {
+  readonly status = 404;
+  constructor(){ super("Resource not found"); }
+}
+
+export function requireRead(viewer:Viewer, resource:ResourceScope){
+  if(!canRead(viewer,resource)) throw new NotFoundOrForbiddenError();
+}
+
+export function requireWrite(viewer:Viewer, resource:ResourceScope){
+  if(!canWrite(viewer,resource)) throw new NotFoundOrForbiddenError();
+}
