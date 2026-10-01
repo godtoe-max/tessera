@@ -1,2 +1,5 @@
-/** Netlify Database supplies NETLIFY_DB_URL after the site is linked. */
-export const databaseEnvironmentVariable = "NETLIFY_DB_URL";
+import { drizzle } from "drizzle-orm/netlify-db";
+import * as schema from "./schema";
+
+/** Netlify configures the connection automatically for production and deploy-preview database branches. */
+export const db = drizzle({ schema });

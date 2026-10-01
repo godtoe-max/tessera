@@ -11,10 +11,10 @@
 ## Database
 
 1. Open the site's **Data & storage** area and enable Netlify Database.
-2. Confirm `NETLIFY_DB_URL` appears in the site's environment variables; never paste it into the repository.
-3. Pull the environment locally with the Netlify CLI only after the site is linked.
-4. Generate and inspect the first PostgreSQL migration from `db/schema.ts`.
-5. Apply the migration to a non-production branch database first.
+2. Confirm the site detects the native `@netlify/database` package.
+3. Keep generated SQL under `netlify/database/migrations`; Netlify applies it automatically immediately before publishing.
+4. Validate schema changes in a deploy preview first so Netlify uses an isolated database branch.
+5. Never paste database connection details into the repository.
 
 ## Identity
 

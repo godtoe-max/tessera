@@ -51,7 +51,7 @@ This is a standard Next.js application. Push the repository to a Git provider, t
 - publish directory: `.next`
 - Node.js: version 22
 
-These values are also recorded in `netlify.toml`. After the first successful deploy, enable Netlify Database for the project. Its `NETLIFY_DB_URL` environment value is already expected by the Drizzle configuration.
+These values are also recorded in `netlify.toml`. The project includes Netlify's native database package. Once Database is enabled, Netlify configures the connection automatically and applies migrations from `netlify/database/migrations` immediately before publishing each production deploy or deploy preview.
 
 Do not commit a database URL, token, or Identity secret. Netlify-provided runtime values belong in the project environment.
 
