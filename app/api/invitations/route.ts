@@ -1,5 +1,5 @@
 import { and, desc, eq, gt } from "drizzle-orm";
-import { verifyRequestOrigin } from "@netlify/identity";
+import { verifyRequestOrigin } from "@/lib/auth/request-origin";
 import { getDb } from "@/db";
 import { invitations, users } from "@/db/schema";
 import { requireCurrentViewer } from "@/lib/auth/current-viewer";

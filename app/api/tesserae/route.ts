@@ -3,7 +3,7 @@ import { requireCurrentViewer } from "@/lib/auth/current-viewer";
 import { NetlifyTesseraRepository } from "@/lib/data/netlify-tessera-repository";
 import { TesseraService } from "@/lib/services/tessera-service";
 import { validateTesseraInput } from "@/lib/validation/tessera";
-import { verifyRequestOrigin } from "@netlify/identity";
+import { verifyRequestOrigin } from "@/lib/auth/request-origin";
 
 export const dynamic="force-dynamic";
 const service=new TesseraService(new NetlifyTesseraRepository());

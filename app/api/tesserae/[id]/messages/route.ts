@@ -1,4 +1,4 @@
-import { verifyRequestOrigin } from "@netlify/identity";
+import { verifyRequestOrigin } from "@/lib/auth/request-origin";
 import { apiError } from "@/lib/api/responses";
 import { requireCurrentViewer } from "@/lib/auth/current-viewer";
 import { NetlifyTesseraRepository } from "@/lib/data/netlify-tessera-repository";
