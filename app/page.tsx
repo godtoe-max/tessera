@@ -38,6 +38,9 @@ export default function Home(){
   useEffect(()=>{
     const controller=new AbortController();
     async function load(){
+      if(/^#(recovery_token|invite_token|confirmation_token|email_change_token|access_token)=/.test(window.location.hash)){
+        window.location.replace(`/login${window.location.hash}`);return;
+      }
       setLoading(true);setError("");
       try{
         const session=await api<{viewer:SessionViewer}>("/api/session",{signal:controller.signal});
