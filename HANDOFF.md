@@ -143,3 +143,31 @@ Do not copy or commit API tokens, database connection strings, Identity cookies,
 ## Git note
 
 The final two production commits were transferred with the GitHub integration because the temporary local Git runtime lost its HTTPS helper. A fresh clone on the new computer will have the authoritative remote history and avoids carrying that local-runtime problem forward.
+
+## Production push after user approval
+
+The user authorized direct production iteration on October 1. The 13 changed files were published to GitHub main through the GitHub connector as commit f92bd87e132ca4f022e3fe0c1e290314fa39c992 (Connect Tessera workspace to authenticated database APIs). The local Git HTTPS helper remains unavailable, so the local HEAD has not been synchronized with that remote commit. Do not push the old local history over remote main. The live production root was verified to show the new loading state and redirect an unauthenticated browser to /login. Authenticated create/reply persistence remains to be exercised with the administrator account. This completion note is local only.
+
+## Clients, Team, and Settings production delivery — October 1, 2026
+
+User authorizes continued implementation, tests, and direct GitHub main/production deployment with minimal oversight. Request notification emails remain explicitly paused. Do not pursue Resend or DNS configuration now.
+
+Completed and deployed:
+- /clients: client and project creation, rename, archive/restore, search, archived-client filter.
+- /team: consultant/customer invitations with scoped roles, Administrator option, existing account membership management, disable/enable, pending invitation revocation.
+- /settings: workspace name, default Mark, administration audit history.
+- Another consultant can be invited or promoted to Administrator. Only Administrators can grant this role or change another Administrator. Own-account disable/access removal is prohibited; transactional locking prevents removal of the last active Administrator.
+- Identity provisioning consumes valid invitations, preserves existing memberships and disabled-account state, and denies uninvited users.
+- Production database migration for administration_events and workspace_settings applied successfully, verified by live administration history and settings saves.
+- Netlify proxy origin mismatch found during live testing and corrected using trusted deployment URLs rather than request forwarding headers. Missing/forged Origin rejected. All four mutation route families use the corrected helper.
+
+Remote history: bac29ef9d06a1f90854f2b98765bc7f83d37c726 adds pages. 31cb2a74b0269dc90e71b2df489df58226bc0f0c fixes deployment origin verification. A follow-up commit corrects the address bar after creating a request from an administration page. Get authoritative current main using GitHub connector; local Git HEAD is stale and its HTTPS helper remains broken. Never push old local history over main.
+
+Validation: 29 unit tests pass, production build and changed-file ESLint pass. Signed-in production browser successfully created client Tessera Test Drive and project Test Drive Project; both survive reload. Saved default Mark High persisted and reached the new-request dialog; restored default to Normal afterward. Created test request TSR-2026-6F8FCB25 and a customer-visible test reply successfully. Audit history records the client, project, and settings changes. User account sgarone@etymonconsulting.com is an Administrator. Team page exposes Administrator invitation scope and own-account protection.
+
+Live invitation delivery and actual promotion of another real user remain unexercised: no second intended recipient supplied, so do not invent an address or grant random access. Invitation/password mail is separate from paused request notifications. Test records are deliberately left visible for the user's test drive.
+
+Useful code: components/tessera/workspace.tsx, components/tessera/administration-panel.tsx, app/api/admin/route.ts, app/api/invitations/route.ts, lib/auth/request-origin.ts. The local @netlify/blobs dependency from earlier exploration remains unpublished; attachments were outside this pages batch.
+
+Enabled one-time continuation automations: continue-tessera-pages-tonight at October 1 11:15 PM MST and continue-tessera-pages-tomorrow-morning at October 2 4:30 AM MST. Both confirmed ACTIVE from their saved automation files. Resume only unfinished work and avoid duplicate edits. Further feature backlog above (request status/assignment/due-date edits, attachments, production hardening) remains future work; prioritize actual defects found in the new pages before expanding scope.
+

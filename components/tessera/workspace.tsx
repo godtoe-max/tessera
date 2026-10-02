@@ -75,7 +75,7 @@ export default function Workspace({initialView="Tesserae"}:{initialView?:View}){
     setCreating(true);setCreateError("");
     try{
       const result=await api<{tessera:Ticket}>("/api/tesserae",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title:form.get("title"),description:form.get("description"),organizationId:project.organizationId,projectId:project.id,mark:customer?"normal":form.get("mark")})});
-      setTickets(current=>[result.tessera,...current]);setSelected(result.tessera.id);setQueue("All Tesserae");setQuery("");setView("Tesserae");setModal(false);setNotice(`${result.tessera.number} was opened.`);
+      setTickets(current=>[result.tessera,...current]);setSelected(result.tessera.id);setQueue("All Tesserae");setQuery("");setView("Tesserae");window.history.replaceState(null,"","/");setModal(false);setNotice(`${result.tessera.number} was opened.`);
     }catch(error){setCreateError(errorText(error));}finally{setCreating(false);}
   }
   async function sendMessage(id:string,body:string,visibility:"customer"|"internal"){
