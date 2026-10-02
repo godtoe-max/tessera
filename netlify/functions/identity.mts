@@ -1,5 +1,5 @@
 import type { UserLoginEvent, UserSignupEvent } from "@netlify/functions";
-import { db } from "../../db/index.ts";
+import { getDb } from "../../db/index.ts";
 import { organizationMemberships, organizations, users } from "../../db/schema.ts";
 
 const consultantRoles=new Set(["consultant","engagement_lead","operations_manager","administrator","auditor"]);
@@ -10,6 +10,7 @@ async function provision(event:UserSignupEvent|UserLoginEvent){
   if(!identity.email) return event.deny();
   const role=identity.roles?.find(value=>consultantRoles.has(value)) as ConsultantRole|undefined;
   if(!role) return;
+  const db=getDb();
 
   await db.transaction(async tx=>{
     const [appUser]=await tx.insert(users).values({
@@ -38,4 +39,3 @@ export default {
   userSignup:provision,
   userLogin:provision,
 };
-

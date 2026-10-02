@@ -14,11 +14,11 @@ The first working surface includes separate consultant and customer experiences:
 - an accessible flow for opening a new Tessera
 - a customer portal restricted to that customer's Tesserae
 - consultant-only assignment controls and internal notes
-- a role preview switch while authentication is still being connected
+- authenticated consultant/customer routing through Netlify Identity
 - consultant overview, client/project, account management, and settings workspaces
 - queue filtering, sorting, pagination states, and mobile ticket details
 
-Records currently live in in-memory sample data and reset when the page reloads.
+Requests and conversations load from the authorized database APIs. Creation, replies, and internal notes persist through those APIs; project choices come from the authenticated catalog. Status, assignment, and due-date updates and account/settings administration are still pending.
 
 ## Intended production architecture
 
@@ -57,4 +57,4 @@ Do not commit a database URL, token, or Identity secret. Netlify-provided runtim
 
 ## Status
 
-The interface, PostgreSQL schema, invitation records, repository and identity-provider contracts, role authorization rules, attachment safeguards, automated tests, and Netlify project configuration are present. Live database persistence, Netlify Identity calls, Blob uploads, email ingestion, and deployment require the Netlify project connection.
+The interface is connected to the deployed database and Identity APIs in the local source. Run through Netlify's development environment for database-backed local testing. Blob uploads, invitation administration, notifications, and record-update endpoints remain pending. See `HANDOFF.md` for local validation and deployment status.

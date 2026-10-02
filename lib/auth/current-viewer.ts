@@ -2,7 +2,7 @@ import "server-only";
 
 import { getUser } from "@netlify/identity";
 import { eq } from "drizzle-orm";
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { organizationMemberships, projectMemberships, projects, users } from "@/db/schema";
 import type { Viewer } from "./authorization";
 
@@ -15,6 +15,7 @@ export type CurrentViewer = Viewer & {
 export async function getCurrentViewer():Promise<CurrentViewer|null>{
   const identity=await getUser();
   if(!identity?.email) return null;
+  const db=getDb();
   const [appUser]=await db.select().from(users).where(eq(users.identityId,identity.id)).limit(1);
   if(!appUser||!appUser.active) return null;
 
@@ -38,4 +39,3 @@ export async function requireCurrentViewer(){
   if(!viewer) throw new AuthenticationError();
   return viewer;
 }
-
