@@ -20,8 +20,15 @@ export function canWrite(viewer:Viewer, resource:ResourceScope){
 }
 
 export function canSeeInternalMessages(viewer:Viewer, resource:ResourceScope){
-  return canRead(viewer,resource)&&viewer.memberships.some(m=>!["customer_user","customer_manager"].includes(m.role));
+  return canRead(viewer,resource)&&viewer.memberships.some(m=>!["customer_user","customer_manager"].includes(m.role)&&(crossClientRoles.has(m.role)||m.organizationId===resource.organizationId&&(!m.projectId||m.projectId===resource.projectId)));
 }
+
+export function canAdminister(viewer:Viewer){return viewer.active&&viewer.memberships.some(m=>crossClientRoles.has(m.role));}
+export function canManageTessera(viewer:Viewer,resource:ResourceScope){
+  return canWrite(viewer,resource)&&canSeeInternalMessages(viewer,resource);
+}
+export function requireAdministrator(viewer:Viewer){if(!canAdminister(viewer))throw new NotFoundOrForbiddenError();}
+export function canGrantRole(viewer:Viewer,role:TesseraRole){return canAdminister(viewer)&&(role!=="administrator"||viewer.memberships.some(m=>m.role==="administrator"));}
 
 export function authorizedOrganizationIds(viewer:Viewer){
   if(!viewer.active) return [];
@@ -53,3 +60,4 @@ export function canInvite(viewer:Viewer,request:{organizationId:string;projectId
     return false;
   });
 }
+

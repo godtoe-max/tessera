@@ -1,4 +1,4 @@
-import { boolean, index, integer, jsonb, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
+import { boolean, index, integer, jsonb, pgEnum, pgSequence, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 
 export const accountType = pgEnum("account_type", ["consultant", "customer"]);
 export const membershipRole = pgEnum("membership_role", ["customer_user", "customer_manager", "consultant", "engagement_lead", "operations_manager", "administrator", "auditor"]);
@@ -6,6 +6,13 @@ export const tesseraStatus = pgEnum("tessera_status", ["open", "in_progress", "w
 export const tesseraMark = pgEnum("tessera_mark", ["urgent", "high", "normal", "low"]);
 export const messageVisibility = pgEnum("message_visibility", ["customer", "internal"]);
 export const invitationStatus = pgEnum("invitation_status", ["pending", "accepted", "expired", "revoked"]);
+export const tesseraNumberSequence = pgSequence("tessera_number_seq",{startWith:1000});
+export const administrationEvents = pgTable("administration_events",{
+  id:uuid("id").primaryKey().defaultRandom(),actorId:uuid("actor_id").references(()=>users.id),eventType:text("event_type").notNull(),data:jsonb("data").notNull().default({}),createdAt:timestamp("created_at",{withTimezone:true}).notNull().defaultNow(),
+});
+export const workspaceSettings = pgTable("workspace_settings",{
+  id:text("id").primaryKey(),name:text("name").notNull().default("Tessera"),defaultMark:tesseraMark("default_mark").notNull().default("normal"),updatedAt:timestamp("updated_at",{withTimezone:true}).notNull().defaultNow(),
+});
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(), identityId: text("identity_id").notNull().unique(), email: text("email").notNull(), displayName: text("display_name").notNull(), accountType: accountType("account_type").notNull(), active: boolean("active").notNull().default(true), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(), updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
@@ -46,3 +53,4 @@ export const attachments = pgTable("attachments", {
 export const tesseraEvents = pgTable("tessera_events", {
   id: uuid("id").primaryKey().defaultRandom(), tesseraId: uuid("tessera_id").notNull().references(() => tesserae.id, { onDelete: "cascade" }), actorId: uuid("actor_id").references(() => users.id), eventType: text("event_type").notNull(), eventData: jsonb("event_data").notNull().default({}), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }, t => [index("events_tessera_idx").on(t.tesseraId, t.createdAt)]);
+
